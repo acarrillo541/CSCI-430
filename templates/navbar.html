@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">TeamSynch</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="/feed/">Chat</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Join/Create </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/creategroup/">Create Team</a>
+          <a class="dropdown-item" href="/joingroup/">Join Team</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Teams </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          {% if groups|length == 0 %}
+          <p>No Teams Joined</p>
+          {% else %} {% for group in groups %}
+          <a class="dropdown-item" href="/group/{{group.id}}">{{group.group_name}}</a>
+          {% endfor %} {% endif %}
+        </div>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="/about/">About</a>
+      </li>
+    </ul>
+    {% if user.is_authenticated %}
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float: right; color: white"> User ID: {{request.user}} </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/settings/">Settings</a>
+          <a class="dropdown-item" href="/logout/">Log Out</a>
+        </div>
+      </li>
+    </ul>
+    {% endif %}
+  </div>
+</nav>
+<script>
+  window.onscroll = scrollShowNav;
+  let navEle = document.getElementsByTagName("nav")[0];
+  let stickyTop = navEle.offsetTop;
+  function scrollShowNav() {
+    if (window.pageYOffset >= stickyTop) {
+      navEle.classList.add("fixed");
+    } else {
+      console.log("WOW");
+      navEle.classList.remove("fixed");
+    }
+  }
+</script>

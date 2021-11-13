@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {%load static%}
+    <meta charset="utf-8" />
+    <title>Create Team</title>
+    {% include "bootstrap" %}
+    <link rel="stylesheet" href="{%static 'create-join-group.css' %}" />
+  </head>
+  <body style = "background-image:url({% static 'images/background.jpg' %}); ">
+    {% include "navbar.html" %}
+    <div class="container">
+      <div class="jumbotron">
+        <h1><strong>Create Team</strong></h1>
+        <form method="POST">
+          {%csrf_token%}
+          <table>
+            {{form}}
+          </table>
+          <button type="submit" class="btn btn-primary" name="creategroup">Create Team</button>
+        </form>
+        <form method="GET">
+          <button type="submit" class="btn btn-secondary" name="cancel">Cancel</button>
+        </form>
+      </div>
+      {% if messages %}
+      <ul class="messages">
+      {% for message in messages %}
+      <h2{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+      </h2>
+      <h3>You are now the Supervisor of your private group "<strong>{{group_name}}</strong>" <br> Your Group ID is: <strong>{{group_id}}</strong></h3>
+      <h5> <em>Copy your unique Group ID and send to your friends and family! The Group ID will allow them to join your private Group.</em></h5>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </body>
+</html>

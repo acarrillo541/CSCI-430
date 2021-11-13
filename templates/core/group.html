@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {%load static%}
+    <meta charset="utf-8">
+    <title>Team</title>
+    {% include "bootstrap" %}
+    <link rel="stylesheet" href="{%static 'create-join-group.css' %}" />
+    <style>
+    img{
+      max-width: 30px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    </style>
+  </head>
+  <body style = "background-image:url({% static 'images/background.jpg' %}); ">
+    {% include "navbar.html" %}
+    <h1 style = "text-align: center;color:black;"><strong>Team Name: {{group_details.group_name}}</strong><h1>
+      <div class="row" style = "margin-top: 10px;">
+        <div class="col-md-4">
+          <div class="container-fluid">
+            <div class = "jumbotron">
+            <h4 style = "text-align:center;margin-top:-30px;"><strong> Team Code</strong></h4>
+              <p style = "font-size:20px; margin-top:20px;"> <img src="{{groups_details.group_creator.userprofile.profile_picture.url}}"><strong>{{groups_details.group_creator}}</strong></p>
+              <p style = "font-size:20px;"> Team ID: {{group_details.group_id}}</p>
+              <a type="submit" class="btn btn-danger" href = "/groupdel/{{group_details.id}}"> Leave Group </a>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-4">
+          <div class="container-fluid">
+            <div class = "jumbotron">
+            <h4 style = "text-align:center;margin-top:-30px;"><strong> Team Members </strong></h4>
+              {% for users in group_details.group_members.all %}
+              <p style = "font-size:20px; margin-top:20px;"> <img src="{{users.userprofile.profile_picture.url}}"><strong>{{users}}</strong></p>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="container-fluid">
+          <div class = "jumbotron">
+          <h4 style = "text-align:center;margin-top:-30px;"><strong> Tasks </strong></h4>
+          <p style = "font-size:15px; float:left;">Member</p>
+          <p style = "font-size:15px; float:right;">Task</p>
+        </br>
+            {% for users in group_details.group_members.all %}
+            <div style="overflow: hidden;">
+                <p style = "font-size:20px; float:left;"> <img src="{{users.userprofile.profile_picture.url}}"><strong>{{users}}</strong></p>
+                <p style = "font-size:20px;float:right;">N/A</p>
+            </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>

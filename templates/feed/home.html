@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>Feed</title>
+    {% include "bootstrap" %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'mystyle.css' %}" />
+    <style>
+button
+{
+    border: none;
+    outline:none;
+}
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  margin:auto;
+  margin-top: 10px;
+}
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.container img {
+  float: left;
+  max-width: 40px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+.container img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+.container p.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+.time-right {
+  float: right;
+  color: #aaa;
+}
+.time-left {
+  float: left;
+  color: #999;
+}
+.time-left-date {
+  float: left;
+}
+.time-right-date {
+  float: right;
+  margin-right:0;
+}
+.right {
+  float: right;
+}
+.comment
+{
+    width: 100%;
+    position:fixed;
+    bottom:0px;
+    margin:auto;
+    background-color: #CEC7BB;
+    text-align: center;
+
+}
+.fas{
+  background-color: transparent;
+}
+</style>
+  </head>
+  <body style = "background-image:url({% static 'images/background.jpg' %}); ">
+    {% include "navbar.html" %}
+    {% if comment_list|length > 0%}
+    {%for comment in comment_list%}
+    {% if comment.user == request.user %}
+    <div class="container darker">
+      <img src="{{comment.profile_picture.url}}" alt="Avatar" class ="right">
+      <strong><p class ="right">{{comment.name}}</p></strong>
+      <p></p>
+      <p>{{comment.comment}}</p>
+        <br/>
+        <span class = "time-left-date">
+        <form action = "{% url 'likecomment'%}" method = 'POST'>{%csrf_token%}
+          <input type = 'hidden' name = 'comment_id' value = "{{comment.id}}">
+          {% if user not in comment.liked.all %}
+            <button href = "/feed/like/{{comment.id}}" type = submit name = "like"><i class="fas fa-thumbs-up"></i> </button>
+          {%else%}
+            <form method = 'POST'>{%csrf_token%}
+              <button href ="/feed/like/{{comment.id}}"style = "color: blue;" type = "submit" name = "unlike"><i class="fas fa-thumbs-up"></i></button>
+            </form>
+          {%endif%}
+          <strong>{{comment.liked.all.count}}</strong>
+        </form>
+        <form action = "{% url 'dislikecomment'%}" method = 'POST'>{%csrf_token%}
+          <input type = 'hidden' name = 'comment_id' value = "{{comment.id}}">
+          {% if user not in comment.disliked.all %}
+            <button href = "/feed/dislike/{{comment.id}}" type = submit name = "like"><i class="fas fa-thumbs-down"></i> </button>
+          {%else%}
+            <form method = 'POST'>{%csrf_token%}
+              <button href ="/feed/dislike/{{comment.id}}"style = "color: blue;" type = "submit" name = "unlike"><i class="fas fa-thumbs-down"></i></button>
+          {%endif%}
+        </form>
+        <strong>{{comment.disliked.all.count}}</strong>
+        <br/>
+        <span class="time-left">{{comment.date}}</span>
+      </span>
+    </div>
+    {% else %}
+      <div class="container ">
+        <span><strong>{{comment.name}}</strong><img src="{{comment.profile_picture.url}}" alt="Avatar"></span>
+        <p>{{comment.comment}}</p>
+        <span class = "time-right-date">
+        <form action = "{% url 'likecomment'%}" method = 'POST'>{%csrf_token%}
+          <input type = 'hidden' name = 'comment_id' value = "{{comment.id}}">
+          {% if user not in comment.liked.all %}
+            <button href = "/feed/like/{{comment.id}}" type = submit name = "like"><i class="fas fa-thumbs-up"></i> </button>
+          {%else%}
+            <form method = 'POST'>{%csrf_token%}
+              <button href ="/feed/like/{{comment.id}}"style = "color: blue;" type = "submit" name = "unlike"><i class="fas fa-thumbs-up"></i></button>
+            </form>
+          {%endif%}
+          <strong>{{comment.liked.all.count}}</strong>
+        </form>
+        <form action = "{% url 'dislikecomment'%}" method = 'POST'>{%csrf_token%}
+          <input type = 'hidden' name = 'comment_id' value = "{{comment.id}}">
+          {% if user not in comment.disliked.all %}
+            <button href = "/feed/dislike/{{comment.id}}" type = submit name = "like"><i class="fas fa-thumbs-down"></i> </button>
+          {%else%}
+            <form method = 'POST'>{%csrf_token%}
+              <button href ="/feed/dislike/{{comment.id}}"style = "color: blue;" type = "submit" name = "unlike"><i class="fas fa-thumbs-down"></i></button>
+          {%endif%}
+        </form>
+        <strong>{{comment.disliked.all.count}}</strong>
+      </br>
+        <span class="time-right">{{comment.date}}</span>
+        <br/>
+        </span>
+        </div>
+    {% endif %}
+    {%endfor%}
+  </table>
+</br>
+</br>
+    {%else%}
+    <h4>No Comments Yet...</h4>
+    {%endif%}
+    <div class = "border">
+    <div class = "comment">
+    <form method = 'POST'>{%csrf_token%}
+      {{form}}
+      <button type = "submit" class = "btn btn-primary" name = addcomment>Add Comment</button>
+    </form>
+  </div>
+</div>
+<a name = "bottom"></a>
+  </body>
+</html>

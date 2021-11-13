@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>About</title>
+    {% include "bootstrap" %}
+    {% load static %}
+  </head>
+  <body style = "background-image:url({% static 'images/background.jpg' %}); ">
+    {% include "navbar.html" %}
+    <div class="row" style = "margin-top: 10px;">
+      <div class="col-md-4">
+        <div class="container-fluid">
+          <div class = "jumbotron">
+            <h1>TeamSynch!</h1>
+            <p> TeamSynch is a Web Platform to help synchronize task amongst group members. TeamSynch will allow you to
+              not only view the tasks you have been assigned but as well as tasks your team members have been assigned as well.
+              This is so that when you do need to wait for the development of another task before you can continue further
+              in your own task you will be able to see when you can get your process resumed.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="container-fluid">
+          <div class = "jumbotron">
+            <h1>Privacy Policy</h1>
+            <p>At TeamSynch, accessible from teamsynch.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by TeamSynch and how we use it.
+If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.
+This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in TeamSynch. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the Free Privacy Policy Generator.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="container-fluid">
+          <div class = "jumbotron">
+            <h1>Creators</h1>
+            <h6>Joshua Vong | Marco Garcia | Alan Carillo
+                | Marco Garcia | Zane Choudhry</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

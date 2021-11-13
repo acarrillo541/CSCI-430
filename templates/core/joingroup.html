@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {%load static%}
+    <meta charset="utf-8">
+    <title>Join Team</title>
+    {% include "bootstrap" %}
+    <link rel="stylesheet" href="{%static 'create-join-group.css' %}" />
+  </head>
+  <body style = "background-image:url({% static 'images/background.jpg' %}); ">
+    {% include "navbar.html" %}
+    <div class="container">
+      <div class = "jumbotron">
+        <h1><strong>Join Team</strong></h1>
+        <form method = 'POST'>{%csrf_token%}
+          <table>
+            {{form}}
+          </table>
+          <button type="submit" class="btn btn-primary" name = "joingroup">Join Group</button>
+        </form>
+        <form method = 'GET'>
+          <button type="submit" class="btn btn-secondary" name = "cancel">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
