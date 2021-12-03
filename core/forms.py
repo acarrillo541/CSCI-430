@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from core.models import Group, UserProfile
-
+from core.models import Group, UserProfile, Task
 
 class JoinForm(forms.ModelForm):
     username = forms.CharField(help_text=False)
@@ -34,3 +33,9 @@ class EditSettings(forms.ModelForm):
     class Meta():
         model = UserProfile
         fields = ['first_name', 'last_name', 'email', 'profile_picture']
+
+
+class TaskEntryForm(forms.ModelForm):
+    class Meta():
+        model = Task
+        fields = ['task_name',]

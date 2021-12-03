@@ -37,6 +37,8 @@ urlpatterns = [
     path('dislike/', feed_views.dis_like_post, name='dislikecomment'),
     path('settings/', core_views.settings, name='settings'),
     path("group/<int:id>", core_views.group, name='group'),
+    path("group/add_task/<int:id>", core_views.add, name='add_tasks'),
+    path("group/assign/<int:id>/<int:id1>/<int:id2>/", core_views.assign, name='assign'),    
     path("groupdel/<int:id>", core_views.leavegroup, name='groupdel'),
 
 ]

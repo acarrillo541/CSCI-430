@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from core.forms import JoinForm, LoginForm, CreateGroupForm, JoinGroup, EditSettings
+from core.forms import JoinForm, LoginForm, CreateGroupForm, JoinGroup, EditSettings, TaskEntryForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from core.models import UserProfile, Group
+from core.models import UserProfile, Group, Task
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from feed.models import FeedItem
@@ -201,11 +201,43 @@ def settings(request):
 
 def group(request, id):
     context = {"group_details": [], "groups": []}
+    table_data = Task.objects.filter(user=request.user)
     group1 = Group.objects.get(id=id)
     context["group_details"] = group1
+    context["table_data"] = table_data
     groups = Group.objects.all()
     for group in groups:
         if request.user in group.group_members.all():
             context['groups'].append(group)
             print("True")
     return render(request, "core/group.html", context)
+
+def add(request, id):
+    if (request.method=="POST"):
+        if ("add" in request.POST):
+            add_form = TaskEntryForm(request.POST)
+            group = Group.objects.get(id=id)
+            if (add_form.is_valid()):
+                task_name = add_form.cleaned_data["task_name"]
+                group1 = group
+                user = User.objects.get(id=request.user.id)
+                Task(task_name=task_name, group=group1, user=user).save()
+                return redirect("/group/"+str(id))
+            else:
+                context = {"form_data": add_form}
+                return render(request, 'core/add_task.html', context)
+        else:
+            return redirect("/core/")
+    else:
+        context = {"form_data": TaskEntryForm()}
+        return render(request, 'core/add_task.html', context)
+
+def assign(request, id, id1, id2):
+    user_id = id
+    task_id = id1
+    group_id = id2
+    group = Group.objects.get(id=group_id)
+    task = Task.objects.get(group=group, id=task_id)
+    task.owner = User.objects.get(id=id)
+    task.save() 
+    return redirect("/group/"+str(group_id))

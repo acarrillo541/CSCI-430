@@ -1,0 +1,29 @@
+{% extends 'base_site.html' %}
+
+{% block extra_js%}
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Items list</h1>
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    </div><!-- /.modal -->
+
+    <table class="table table-bordered table-hovered "cellspacing='0'>
+        <tr>
+            <th>Item</th>
+            <th>Actions</th>
+        </tr>
+        {% for loan in object_list %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                    <a class="fa fa-pencil" data-toggle="modal" href="{% url 'item_edit' item.id %}" data-target="#modal" title="edit item" data-tooltip></a> |
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}

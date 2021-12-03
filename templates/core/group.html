@@ -4,9 +4,11 @@
     {%load static%}
     <meta charset="utf-8">
     <title>Team</title>
-    {% include "bootstrap" %}
+    <!--{% include "bootstrap" %} -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{%static 'create-join-group.css' %}" />
-    <style>
+
+<style>
     img{
       max-width: 30px;
       border-radius: 50%;
@@ -16,6 +18,18 @@
   </head>
   <body style = "background-image:url({% static 'images/background.jpg' %}); ">
     {% include "navbar.html" %}
+    <div class="dropdown" style = "font-size:20px;float:right;">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Action
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+      </div>
+    </div>
     <h1 style = "text-align: center;color:black;"><strong>Team Name: {{group_details.group_name}}</strong><h1>
       <div class="row" style = "margin-top: 10px;">
         <div class="col-md-4">
@@ -44,16 +58,48 @@
           <h4 style = "text-align:center;margin-top:-30px;"><strong> Tasks </strong></h4>
           <p style = "font-size:15px; float:left;">Member</p>
           <p style = "font-size:15px; float:right;">Task</p>
+          
         </br>
+            <!--
             {% for users in group_details.group_members.all %}
             <div style="overflow: hidden;">
                 <p style = "font-size:20px; float:left;"> <img src="{{users.userprofile.profile_picture.url}}"><strong>{{users}}</strong></p>
                 <p style = "font-size:20px;float:right;">N/A</p>
             </div>
             {% endfor %}
+          -->
+          {% for row in table_data %} 
+            <p style = "font-size:20px; float:left;"><strong>{{row.task_name}}</strong></p>
+            {% if row.owner == NULL %}
+              <div class="btn-group dropleft float-right">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Assign
+                </button>
+                <div class="dropdown-menu">
+                  {% for user in group_details.group_members.all %}
+                    <a class="dropdown-item" href="/group/assign/{{user.id}}/{{row.id}}/{{group_details.id}}/">{{user}}{{user.id}}</a>
+                  {% endfor %} 
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Delete Task</a>
+                </div>
+              </div>
+            {% else %}
+              <p style = "font-size:20px;float:right;">{{row.owner}}</p>
+            {%endif%}
+            <br>
+          
+          {% endfor %} 
+          <form method = "GET" action = "/group/add_task/{{group_details.id}}">
+            <input type="submit" class="btn btn-primary" value = "Add Task">
+          </form>
+          <br>
         </div>
       </div>
     </div>
     </div>
+    <!-- -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
   </body>
 </html>
