@@ -16,14 +16,14 @@ class UserProfile(models.Model):
     form_submit = models.BooleanField(default = False)
 
 
-class Group(models.Model):  # unique league
+class Group(models.Model): 
    group_name = models.CharField(max_length=30)
    group_id = models.CharField(max_length=10)
    group_creator = models.ForeignKey(
        User, on_delete=models.CASCADE, related_name="creator")  # only 1 user
    group_members = models.ManyToManyField(User)
 
-class Task(models.Model): # belongs to a group 
+class Task(models.Model):  
     user = models.ForeignKey(User, on_delete = models.CASCADE, null=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     owner = models.ForeignKey(
